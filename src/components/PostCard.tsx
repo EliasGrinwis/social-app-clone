@@ -9,8 +9,11 @@ import DropdownMenu from "./DropdownMenu";
 import Modal from "./Modal";
 import {useSession} from "next-auth/react";
 import {redirect} from "next/navigation";
+import {useRouter} from "next/navigation";
+import Link from "next/link";
 
 export default function PostCard(post: Post) {
+  const router = useRouter();
   const limitedavatars = post.postlikes.slice(0, 3);
   const {data: session} = useSession({
     required: true,
@@ -27,6 +30,7 @@ export default function PostCard(post: Post) {
   ) => {
     try {
       createLikePost(postId, username, userimage, useremail);
+      router.refresh();
     } catch (error) {
       console.error("Error liking post", error);
     }
@@ -35,7 +39,7 @@ export default function PostCard(post: Post) {
   return (
     <div
       key={post.id}
-      className="mx-auto bg-black bg-opacity-15 rounded-lg p-4 mb-8">
+      className="mx-auto bg-black bg-opacity-15 rounded-lg p-4 mb-8 hover:bg-opacity-30 transition-all duration-300">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Image
@@ -59,15 +63,17 @@ export default function PostCard(post: Post) {
       </div>
 
       <div>
-        <div className="pt-3 mb-4 w-full">
-          <Image
-            className="w-full h-[585px] rounded-md object-cover cursor-pointer"
-            src={post.image}
-            alt={post.title}
-            width={500}
-            height={500}
-            unoptimized={true}
-          />
+        <div className="w-full py-4">
+          <Link href={`/post/detail/${post.id}`}>
+            <Image
+              className="w-full h-auto rounded-md object-contain cursor-pointer"
+              src={post.image}
+              alt={post.title}
+              width={500}
+              height={500}
+              unoptimized={true}
+            />
+          </Link>
         </div>
 
         <div className="flex items-center justify-between">
@@ -81,17 +87,17 @@ export default function PostCard(post: Post) {
                   session?.user?.email || ""
                 )
               }
-              icon="material-symbols:heart-plus-outline-rounded"
+              icon="akar-icons:heart"
               className="w-7 h-7 text-purple cursor-pointer"
             />
             <Icon
-              icon="material-symbols:mode-comment-outline-rounded"
+              icon="akar-icons:comment"
               className="w-7 h-7 text-purple cursor-pointer"
             />
           </div>
           <div>
             <Icon
-              icon="material-symbols:bookmark-outline-rounded"
+              icon="akar-icons:ribbon"
               className="w-7 h-7 text-purple cursor-pointer"
             />
           </div>

@@ -48,6 +48,17 @@ export async function fetchPosts(): Promise<Post[]> {
   }
 }
 
+export async function fetchPostById(id: string): Promise<Post | null> {
+  noStore();
+  try {
+    const post = await sql`SELECT * FROM posts WHERE id = ${id}`;
+    return post.rows[0] as Post;
+  } catch (error) {
+    console.error("Error fetching post by id", error);
+    return null;
+  }
+}
+
 export async function fetchPostsByUserEmail(userEmail: string) {
   noStore();
   try {
@@ -56,5 +67,18 @@ export async function fetchPostsByUserEmail(userEmail: string) {
     return posts.rows;
   } catch (error) {
     console.error("Error fetching posts by email", error);
+  }
+}
+
+export async function fetchMyLikedPosts(userEmail: string) {
+  noStore();
+  try {
+    const likedPosts = await sql`
+      SELECT * FROM posts 
+      WHERE id IN (SELECT post_id FROM postlikes WHERE useremail = ${userEmail}) 
+      ORDER BY created DESC`;
+    return likedPosts.rows;
+  } catch (error) {
+    console.error("Error fetching liked posts", error);
   }
 }
