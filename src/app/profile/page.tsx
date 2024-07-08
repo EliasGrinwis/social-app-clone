@@ -73,6 +73,7 @@ export default function Profile() {
           userPosts={userPosts}
           setHoveredIndex={setHoveredIndex}
           hoveredIndex={hoveredIndex}
+          type="myPosts"
         />
       );
     } else if (selectedTab === "likedPosts") {
@@ -81,6 +82,7 @@ export default function Profile() {
           userPosts={userLikedPosts}
           setHoveredIndex={setHoveredIndex}
           hoveredIndex={hoveredIndex}
+          type="likedPosts"
         />
       );
     }

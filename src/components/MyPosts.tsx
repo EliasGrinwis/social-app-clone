@@ -7,15 +7,33 @@ export default function MyPosts({
   userPosts,
   setHoveredIndex,
   hoveredIndex,
+  type,
 }: any) {
   return (
     <div>
       {userPosts && userPosts.length === 0 ? (
         <div className="text-center mt-8">
-          <h1 className="text-2xl font-semibold text-white">No posts found</h1>
-          <p className="text-md text-accent">
-            You have not created any posts yet.
-          </p>
+          {type === "myPosts" ? (
+            <div>
+              <h1 className="text-2xl font-semibold text-white">
+                No posts found
+              </h1>
+              <p className="text-md text-accent">
+                You have not created any posts yet.
+              </p>
+            </div>
+          ) : (
+            type === "likedPosts" && (
+              <div>
+                <h1 className="text-2xl font-semibold text-white">
+                  No liked posts found
+                </h1>
+                <p className="text-md text-accent">
+                  You have not liked any posts yet.
+                </p>
+              </div>
+            )
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-8">
